@@ -1,0 +1,12 @@
+# Folders
+node_modules/
+src/
+test/
+ts-src/
+_site/
+
+# files
+.gitignore
+package-lock.json
+pub.mjs
+tsconfig.json

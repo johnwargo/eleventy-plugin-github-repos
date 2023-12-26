@@ -1,0 +1,28 @@
+{
+  "name": "eleventy-plugin-github-repos",
+  "version": "0.0.0",
+  "description": "Creates an Eleventy data file containing a list of GitHub repositories for a specified user or organization.",
+  "author": "John M. Wargo",
+  "license": "MIT",
+  "main": "eleventy-plugin-github-repos.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnwargo/eleventy-plugin-github-repos"
+  },
+  "scripts": {
+    "test": "tsc && echo \"Launching test\" && node ./test/test.js && echo \"Test complete\"",
+    "start": "tsc && eleventy --serve",
+    "build": "tsc && eleventy"
+  },
+  "keywords": [
+    "Eleventy"
+  ],
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "cli-logger": "^0.5.40"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}
