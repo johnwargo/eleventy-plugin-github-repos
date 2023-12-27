@@ -3,15 +3,13 @@ import logger from 'cli-logger';
 
 type ModuleOptions = {
   apiKey?: string;
-  debugMode?: boolean;  
+  debugMode?: boolean;
   quitOnError?: boolean;
   userAccount?: string;
 }
 
-module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
-  
-  eleventyConfig.addCollection('repositories', async (collectionApi: any) => {
-
+module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
+  eleventyConfig.addCollection('githubRepos', async (collectionApi: any) => {
     const configDefaults: ModuleOptions = {
       apiKey: '',
       userAccount: '',
@@ -29,17 +27,17 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     }
     var log = logger(conf);
 
+    console.dir(_options);
+
     // merge the defaults (first) with the provided options (second)
-
-    console.dir(options);
-
-    const config: ModuleOptions = Object.assign({}, configDefaults, options);
+    const config: ModuleOptions = Object.assign({}, configDefaults, _options);
 
     // set the logger log level
     const debugMode = config.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled\n');
     // if (debugMode) console.dir(config);
+
     console.dir(config);
 
     // validate the configuration  

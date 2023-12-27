@@ -1,4 +1,4 @@
-const repositories = require('./eleventy-plugin-github-repos.js');
+const githubRepos = require('./eleventy-plugin-github-repos.js');
 
 module.exports = eleventyConfig => {
 
@@ -6,9 +6,9 @@ module.exports = eleventyConfig => {
   const debugMode = false;
   const quitOnError = true;
 
-  // eleventyConfig.addPlugin(repositories, { debugMode });
-  // eleventyConfig.addPlugin(repositories, { userAccount: 'johnwargo', debugMode });
-  eleventyConfig.addPlugin(repositories, { userAccount: 'johnwargo', apiKey, debugMode, quitOnError});
+  // eleventyConfig.addPlugin(repos, { debugMode });
+  // eleventyConfig.addPlugin(repos, { userAccount: 'johnwargo', debugMode });
+  eleventyConfig.addPlugin(githubRepos, { userAccount: 'johnwargo', apiKey, debugMode, quitOnError});
 
   eleventyConfig.addPassthroughCopy('src/assets/');
 

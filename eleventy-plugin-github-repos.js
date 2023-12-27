@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli_logger_1 = __importDefault(require("cli-logger"));
-module.exports = function (eleventyConfig, options = {}) {
-    eleventyConfig.addCollection('repositories', async (collectionApi) => {
+module.exports = function (eleventyConfig, _options = {}) {
+    eleventyConfig.addCollection('githubRepos', async (collectionApi) => {
         const configDefaults = {
             apiKey: '',
             userAccount: '',
@@ -19,8 +19,8 @@ module.exports = function (eleventyConfig, options = {}) {
             return `[${APP_NAME}]`;
         };
         var log = (0, cli_logger_1.default)(conf);
-        console.dir(options);
-        const config = Object.assign({}, configDefaults, options);
+        console.dir(_options);
+        const config = Object.assign({}, configDefaults, _options);
         const debugMode = config.debugMode || false;
         log.level(debugMode ? log.DEBUG : log.INFO);
         log.debug('Debug mode enabled\n');
