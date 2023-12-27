@@ -1,6 +1,7 @@
 # Eleventy Plugin GitHub Repositories
 
 
+![Sample Page](images/image-01.png)
 
 *** 
 

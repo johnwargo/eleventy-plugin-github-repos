@@ -19,12 +19,12 @@ module.exports = function (eleventyConfig, _options = {}) {
             return `[${APP_NAME}]`;
         };
         var log = (0, cli_logger_1.default)(conf);
-        console.dir(_options);
         const config = Object.assign({}, configDefaults, _options);
         const debugMode = config.debugMode || false;
         log.level(debugMode ? log.DEBUG : log.INFO);
         log.debug('Debug mode enabled\n');
-        console.dir(config);
+        if (debugMode)
+            console.dir(config);
         if (!config.userAccount) {
             log.error('Missing GitHub user account');
             process.exit(1);
@@ -68,8 +68,6 @@ module.exports = function (eleventyConfig, _options = {}) {
         }
         console.timeEnd(durationStr);
         log.info(`Retrieved repository metadata for ${result.length} repos`);
-        if (debugMode)
-            console.dir(result);
         return result;
     });
 };

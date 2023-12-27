@@ -27,8 +27,6 @@ module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
     }
     var log = logger(conf);
 
-    console.dir(_options);
-
     // merge the defaults (first) with the provided options (second)
     const config: ModuleOptions = Object.assign({}, configDefaults, _options);
 
@@ -36,9 +34,7 @@ module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
     const debugMode = config.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled\n');
-    // if (debugMode) console.dir(config);
-
-    console.dir(config);
+    if (debugMode) console.dir(config);
 
     // validate the configuration  
     if (!config.userAccount) {
@@ -81,7 +77,6 @@ module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
     }
     console.timeEnd(durationStr);
     log.info(`Retrieved repository metadata for ${result.length} repos`);
-    if (debugMode) console.dir(result);
     return result;
   });
 }
