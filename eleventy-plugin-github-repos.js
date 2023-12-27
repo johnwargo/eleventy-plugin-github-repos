@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli_logger_1 = __importDefault(require("cli-logger"));
 module.exports = function (eleventyConfig, options = {}) {
-    console.dir(options);
     eleventyConfig.addCollection('repositories', async (collectionApi) => {
         const configDefaults = {
             apiKey: '',

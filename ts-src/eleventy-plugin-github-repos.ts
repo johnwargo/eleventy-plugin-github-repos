@@ -9,8 +9,6 @@ type ModuleOptions = {
 }
 
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
-
-  console.dir(options);
   
   eleventyConfig.addCollection('repositories', async (collectionApi: any) => {
 
