@@ -68,6 +68,8 @@ module.exports = function (eleventyConfig, options = {}) {
         }
         console.timeEnd(durationStr);
         log.info(`Retrieved repository metadata for ${result.length} repos`);
+        if (debugMode)
+            console.dir(result);
         return result;
     });
 };

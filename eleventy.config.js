@@ -3,7 +3,7 @@ const repositories = require('./eleventy-plugin-github-repos.js');
 module.exports = eleventyConfig => {
 
   const apiKey = process.env.GITHUB_API_KEY;
-  const debugMode = true;
+  const debugMode = false;
   const quitOnError = true;
 
   // eleventyConfig.addPlugin(repositories, { debugMode });

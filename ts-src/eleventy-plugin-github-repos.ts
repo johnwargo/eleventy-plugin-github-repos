@@ -83,7 +83,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     }
     console.timeEnd(durationStr);
     log.info(`Retrieved repository metadata for ${result.length} repos`);
-    // if (debugMode) console.dir(result);
+    if (debugMode) console.dir(result);
     return result;
   });
 }
