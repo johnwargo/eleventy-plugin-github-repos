@@ -110,7 +110,6 @@ D:\dev\11ty\eleventy-plugin-github-repos>npm start
 
 ![Sample Page](images/image-01.png)
 
-
 *** 
 
 If this code helps you, please consider buying me a coffee.
