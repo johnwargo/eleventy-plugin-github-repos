@@ -42,7 +42,6 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled\n');
     // if (debugMode) console.dir(config);
-
     console.dir(config);
 
     // validate the configuration  
