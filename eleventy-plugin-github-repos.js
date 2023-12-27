@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli_logger_1 = __importDefault(require("cli-logger"));
 module.exports = function (eleventyConfig, options = {}) {
-    eleventyConfig.addCollection('repos', async (collectionApi) => {
+    console.dir(options);
+    eleventyConfig.addCollection('repositories', async (collectionApi) => {
         const configDefaults = {
             apiKey: '',
             userAccount: '',
@@ -19,20 +20,20 @@ module.exports = function (eleventyConfig, options = {}) {
             return `[${APP_NAME}]`;
         };
         var log = (0, cli_logger_1.default)(conf);
+        console.dir(options);
         const config = Object.assign({}, configDefaults, options);
-        const debugMode = options.debugMode || false;
+        const debugMode = config.debugMode || false;
         log.level(debugMode ? log.DEBUG : log.INFO);
         log.debug('Debug mode enabled\n');
-        if (debugMode)
-            console.dir(config);
+        console.dir(config);
         if (!config.userAccount) {
             log.error('Missing GitHub user account');
-            if (config.quitOnError)
-                process.exit(1);
-            return;
+            process.exit(1);
         }
         if (!config.apiKey) {
             log.error('No GitHub API key provided, using unauthenticated access');
+            if (config.quitOnError)
+                process.exit(1);
         }
         var currentPage = 0;
         var done = false;

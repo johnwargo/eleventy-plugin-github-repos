@@ -3,16 +3,15 @@ import logger from 'cli-logger';
 
 type ModuleOptions = {
   apiKey?: string;
-  userAccount?: string;
-  debugMode?: boolean;
+  debugMode?: boolean;  
   quitOnError?: boolean;
+  userAccount?: string;
 }
 
-module.exports = function (
-  eleventyConfig: any, 
-  options: ModuleOptions = {}
-  ) {
+module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
+  console.dir(options);
+  
   eleventyConfig.addCollection('repositories', async (collectionApi: any) => {
 
     const configDefaults: ModuleOptions = {
@@ -33,23 +32,28 @@ module.exports = function (
     var log = logger(conf);
 
     // merge the defaults (first) with the provided options (second)
+
+    console.dir(options);
+
     const config: ModuleOptions = Object.assign({}, configDefaults, options);
 
     // set the logger log level
-    const debugMode = options.debugMode || false;
+    const debugMode = config.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled\n');
-    if (debugMode) console.dir(config);
+    // if (debugMode) console.dir(config);
+
+    console.dir(config);
 
     // validate the configuration  
     if (!config.userAccount) {
       log.error('Missing GitHub user account');
-      if (config.quitOnError) process.exit(1);
-      return;
+      process.exit(1);
     }
 
     if (!config.apiKey) {
       log.error('No GitHub API key provided, using unauthenticated access');
+      if (config.quitOnError) process.exit(1);
     }
 
     var currentPage: number = 0;

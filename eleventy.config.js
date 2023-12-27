@@ -1,13 +1,13 @@
-const githubRepos = require('./eleventy-plugin-github-repos.js');
+const repositories = require('./eleventy-plugin-github-repos.js');
 
 module.exports = eleventyConfig => {
 
-  const debugMode = false;
-  
-  eleventyConfig.addPlugin(githubRepos, { debugMode });
-  // eleventyConfig.addPlugin(githubRepos, {userAccount: 'johnwargo', debugMode});
-  // get the API key from the environment
-  // eleventyConfig.addPlugin(githubRepos, {userAccount: 'johnwargo', apiKey: 'YOUR_API_KEY', debugMode});
+  const debugMode = true;
+  const apiKey = process.env.GITHUB_API_KEY;
+
+  // eleventyConfig.addPlugin(repositories, { debugMode });
+  // eleventyConfig.addPlugin(repositories, { userAccount: 'johnwargo', debugMode });
+  eleventyConfig.addPlugin(repositories, {userAccount: 'johnwargo', apiKey, debugMode});
 
   eleventyConfig.addPassthroughCopy('src/assets/');
 
