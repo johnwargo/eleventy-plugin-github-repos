@@ -13,7 +13,7 @@ npm install eleventy-plugin-github-repos
 Next, in your Eleventy project's eleventy.config.js file, import the plugin as shown below:
 
 ```js
-const githubRepos = require('eleventy-plugin-github-repos.js');
+const githubRepos = require('eleventy-plugin-github-repos');
 ```
 
 Then, inside the module.exports section, load the plugin:
