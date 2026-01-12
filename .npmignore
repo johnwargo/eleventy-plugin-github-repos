@@ -4,6 +4,7 @@ src/
 test/
 ts-src/
 _site/
+.cache/
 
 # files
 .gitignore

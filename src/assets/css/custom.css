@@ -1,0 +1,22 @@
+/* Custom styling provided by Scott Good. */
+body header {
+  padding: 3rem 1rem 0;
+}
+
+header nav {
+  margin-bottom: 0;
+}
+
+body main,
+body footer {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+footer hr {
+  margin-bottom: 0;
+}
+
+body hr {
+  margin: 20px 0;
+}

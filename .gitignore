@@ -1,6 +1,7 @@
 # Folders
+.cache/
 node_modules/
 _site/
 
 # files
-
+.DS_Store

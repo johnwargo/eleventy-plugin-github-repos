@@ -1,21 +1,34 @@
+/**********************************************************
+ * Eleventy Plugin: GitHub Repos
+ * 
+ * Fetches all repositories from GitHub for a 
+ * given author.
+ **********************************************************/
+
+//@ts-ignore
+import Fetch from "@11ty/eleventy-fetch";
 //@ts-ignore
 import logger from 'cli-logger';
 
 type ModuleOptions = {
   apiKey?: string;
   debugMode?: boolean;
+  cacheRequests?: boolean;
+  cacheDuration?: string;
   quitOnError?: boolean;
   userAccount?: string;
 }
 
-module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
+export default function (eleventyConfig: any, _options: ModuleOptions = {}) {
   eleventyConfig.addCollection('githubRepos', async (collectionApi: any) => {
-    
+
     const configDefaults: ModuleOptions = {
       apiKey: '',
-      userAccount: '',
+      cacheRequests: false,
+      cacheDuration: '1d',
       debugMode: false,
-      quitOnError: false
+      quitOnError: false,
+      userAccount: ''
     };
 
     const APP_NAME = 'Eleventy-Plugin-GitHub-Repos';
@@ -34,8 +47,12 @@ module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
     // set the logger log level
     const debugMode = config.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
-    log.debug('Debug mode enabled\n');
-    if (debugMode) console.dir(config);
+    log.debug('Debug mode enabled');
+    console.log();
+    if (debugMode) {
+      console.log('Configuration:');
+      console.table(config);
+    }
 
     // validate the configuration  
     if (!config.userAccount) {
@@ -50,34 +67,63 @@ module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
 
     var currentPage: number = 0;
     var done: boolean = false;
+    var FetchOptions: any = {};
     var repoURL: string;
     var options: any = {};
     var result: any[] = [];
 
-    log.info(`Fetching GitHub repositories for ${config.userAccount}`);
+    if (config.apiKey) options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
+    FetchOptions.fetchOptions = { options };
+    if (config.cacheRequests) {
+      FetchOptions.duration = config.cacheDuration;
+      FetchOptions.type = "json";
+    }
+
+    if (debugMode) {
+      console.log('Fetch Options:');
+      console.table(FetchOptions);
+      console.log();
+    }
+
+    log.info(`Fetching GitHub repositories for ${config.userAccount} using ${config.cacheRequests ? 'Eleventy-Fetch' : 'fetch'}`);
+
     console.time(durationStr);
     while (!done) {
       currentPage += 1;
-      if (config.apiKey) options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
       repoURL = `https://api.github.com/users/${config.userAccount}/repos?per_page=100&page=${currentPage}`;
       log.info(`Fetching ${repoURL}`);
-      var response = await fetch(repoURL, options);
-      var tempRes = await response.json();
-      if (response.status == 200) {
-        if (tempRes.length === 0) {
-          done = true;
+
+      if (config.cacheRequests) {
+        // use Eleventy-Fetch
+        var data = await Fetch(repoURL, FetchOptions);
+        if (data.length > 0) {
+          log.debug(`Found ${data.length} repos`);
+          result = result.concat(data);
         } else {
-          log.debug(`Found ${tempRes.length} repos`);
-          result = result.concat(tempRes);
+          log.debug('No more repos');
+          done = true;
         }
       } else {
-        log.error(`\nError: ${response.status} - ${response.statusText}\n`);
-        if (tempRes.message) log.info(tempRes.message, tempRes.documentation_url);
-        if (config.quitOnError) process.exit(1);
+        // use fetch directly
+        var response = await fetch(repoURL, options);
+        var tempRes = await response.json();
+        if (response.status == 200) {
+          if (tempRes.length === 0) {
+            done = true;
+          } else {
+            log.debug(`Found ${tempRes.length} repos`);
+            result = result.concat(tempRes);
+          }
+        } else {
+          log.error(`\nError: ${response.status} - ${response.statusText}\n`);
+          if (tempRes.message) log.info(tempRes.message, tempRes.documentation_url);
+          if (config.quitOnError) process.exit(1);
+        }
       }
+
     }
     console.timeEnd(durationStr);
-    log.info(`Retrieved repository metadata for ${result.length} repos`);
+    log.info(`Gathered repository metadata for ${result.length} repos`);
     return result;
   });
 }

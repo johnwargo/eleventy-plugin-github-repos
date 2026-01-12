@@ -1,10 +1,16 @@
 # Changelog
 
-## 20230802 0.1.1
+## 20260112 v0.1.1
+
++ Converted plugin to 11ty 3.x (potentially a breaking change).
++ Added support for the `eleventy-cache` plugin.
++ Added configuration options `cacheRequests` and `cacheDuration`.
+
+## 20230802
 
 Reduced the amount of output written to the console; enable `debug` mode to send more content to the console during processing.
 
-## 20230730 0.1.0
+## 20230730
 
 **Breaking Change** 
 

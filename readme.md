@@ -1,6 +1,10 @@
 # Eleventy Plugin GitHub Repositories
 
-An Eleventy plugin that creates a collection containing metadata from an account's GitHub repositories.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6c5a946f-27e1-4e59-b1ab-d8d446b444a8/deploy-status)](https://app.netlify.com/projects/11ty-github-repos/deploys)
+
+An Eleventy plugin that creates an Eleventy collection containing metadata from an account's GitHub repositories.
+
+**Note:** You can see this plugin in action at the [sample app](https://11ty-github-repos.netlify.app/).
 
 # Usage
 
@@ -22,7 +26,7 @@ Then, inside the module.exports section, load the plugin:
 eleventyConfig.addPlugin(githubRepos, { userAccount: 'johnwargo' });
 ```
 
-The `userAccount` configuration property specifies the GitHub account the plugin will build the list from. 
+The `userAccount` property is a required configuration option and specifies the GitHub account from which the plugin will build the list. 
 
 With this configuration, the plugin calls the GitHub `repos` API in unauthenticated mode (see [Adding a GitHub Repository List to an Eleventy Site](https://johnwargo.com/posts/2023/github-repository-list-eleventy/) for details) and GitHub will rate limit API requests to 60 per hour.
 
@@ -36,6 +40,39 @@ const apiKey = process.env.GITHUB_API_KEY;
 eleventyConfig.addPlugin(githubRepos, { userAccount: 'johnwargo', apiKey});
 ```
 
+## Configuration Options
+
+The plugin supports the following configuration options.
+
+| Option          | Type    | Description | Default | 
+| --------------- | ------- |-----------  | ------- |
+| `apiKey`        | String  | Described above. | `''` |
+| `debugMode`     | Boolean | Use when troubleshooting issues with the plugin or your access to the GitHub API. | `false` |
+| `cacheRequests` | Boolean | Controls whether the plugin makes the API requests every time the site builds (`false`) or uses the Eleventy Cache plugin to cache requests for `cacheDuration` (`true`) | `true` | 
+| `cacheDuration` | String  | With caching enabled, this option controls the cache duration (how long the plugin waits before requesting new data during the build process). Default is 1 day (`1d`); learn more in [Change the Cache Duration](https://www.11ty.dev/docs/plugins/fetch/#change-the-cache-duration). | '1d' |
+| `quitOnError`   | Boolean | Controls whether the plugin cancels the build process when it encounters an error. | `false` |
+| `userAccount`   | String  | Described above. | `''` |
+
+## Examples
+
+### `CacheRequests`
+
+Configure the plugin to use the Eleventy [Fetch plugin](https://www.11ty.dev/docs/plugins/fetch/):
+
+```js
+const apiKey = process.env.GITHUB_API_KEY;
+
+eleventyConfig.addPlugin(githubRepos,
+  {
+    userAccount: 'johnwargo',
+    apiKey,
+    cacheRequests: true,
+    cacheDuration: '1d'
+  });
+```
+
+### `debugMode` 
+
 Enable `debugMode` to write additional stuff to the console during the Eleventy build process:
 
 ```js
@@ -44,6 +81,8 @@ const debugMode = true;
   
 eleventyConfig.addPlugin(githubRepos, { userAccount: 'johnwargo', apiKey, debugMode});
 ```
+
+### `quitOnError`
 
 Configure the plugin to exit the build process when it encounters an error using `quitOnError`
 

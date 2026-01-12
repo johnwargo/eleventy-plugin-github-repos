@@ -1,10 +1,11 @@
 {
   "name": "eleventy-plugin-github-repos",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "An Eleventy plugin that creates a collection containing metadata from an account's GitHub repositories",
   "author": "John M. Wargo",
   "license": "MIT",
   "main": "eleventy-plugin-github-repos.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johnwargo/eleventy-plugin-github-repos"
@@ -15,14 +16,17 @@
     "build": "tsc && eleventy"
   },
   "keywords": [
-    "Eleventy"
+    "eleventy",
+    "11ty",
+    "plugin"
   ],
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-fetch": "^5.1.1",
+    "cli-logger": "^0.5.40"
+  },
   "devDependencies": {
     "@types/node": "^20.10.5",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "cli-logger": "^0.5.40"
   }
 }

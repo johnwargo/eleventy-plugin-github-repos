@@ -1,30 +1,31 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const cli_logger_1 = __importDefault(require("cli-logger"));
-module.exports = function (eleventyConfig, _options = {}) {
+import Fetch from "@11ty/eleventy-fetch";
+import logger from 'cli-logger';
+export default function (eleventyConfig, _options = {}) {
     eleventyConfig.addCollection('githubRepos', async (collectionApi) => {
         const configDefaults = {
             apiKey: '',
-            userAccount: '',
+            cacheRequests: false,
+            cacheDuration: '1d',
             debugMode: false,
-            quitOnError: false
+            quitOnError: false,
+            userAccount: ''
         };
         const APP_NAME = 'Eleventy-Plugin-GitHub-Repos';
         const durationStr = `[${APP_NAME}] Duration`;
-        var conf = { console: true, level: cli_logger_1.default.INFO };
+        var conf = { console: true, level: logger.INFO };
         conf.prefix = function (record) {
             return `[${APP_NAME}]`;
         };
-        var log = (0, cli_logger_1.default)(conf);
+        var log = logger(conf);
         const config = Object.assign({}, configDefaults, _options);
         const debugMode = config.debugMode || false;
         log.level(debugMode ? log.DEBUG : log.INFO);
-        log.debug('Debug mode enabled\n');
-        if (debugMode)
-            console.dir(config);
+        log.debug('Debug mode enabled');
+        console.log();
+        if (debugMode) {
+            console.log('Configuration:');
+            console.table(config);
+        }
         if (!config.userAccount) {
             log.error('Missing GitHub user account');
             process.exit(1);
@@ -36,38 +37,62 @@ module.exports = function (eleventyConfig, _options = {}) {
         }
         var currentPage = 0;
         var done = false;
+        var FetchOptions = {};
         var repoURL;
         var options = {};
         var result = [];
-        log.info(`Fetching GitHub repositories for ${config.userAccount}`);
+        if (config.apiKey)
+            options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
+        FetchOptions.fetchOptions = { options };
+        if (config.cacheRequests) {
+            FetchOptions.duration = config.cacheDuration;
+            FetchOptions.type = "json";
+        }
+        if (debugMode) {
+            console.log('Fetch Options:');
+            console.table(FetchOptions);
+            console.log();
+        }
+        log.info(`Fetching GitHub repositories for ${config.userAccount} using ${config.cacheRequests ? 'Eleventy-Fetch' : 'fetch'}`);
         console.time(durationStr);
         while (!done) {
             currentPage += 1;
-            if (config.apiKey)
-                options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
             repoURL = `https://api.github.com/users/${config.userAccount}/repos?per_page=100&page=${currentPage}`;
             log.info(`Fetching ${repoURL}`);
-            var response = await fetch(repoURL, options);
-            var tempRes = await response.json();
-            if (response.status == 200) {
-                if (tempRes.length === 0) {
-                    done = true;
+            if (config.cacheRequests) {
+                var data = await Fetch(repoURL, FetchOptions);
+                if (data.length > 0) {
+                    log.debug(`Found ${data.length} repos`);
+                    result = result.concat(data);
                 }
                 else {
-                    log.debug(`Found ${tempRes.length} repos`);
-                    result = result.concat(tempRes);
+                    log.debug('No more repos');
+                    done = true;
                 }
             }
             else {
-                log.error(`\nError: ${response.status} - ${response.statusText}\n`);
-                if (tempRes.message)
-                    log.info(tempRes.message, tempRes.documentation_url);
-                if (config.quitOnError)
-                    process.exit(1);
+                var response = await fetch(repoURL, options);
+                var tempRes = await response.json();
+                if (response.status == 200) {
+                    if (tempRes.length === 0) {
+                        done = true;
+                    }
+                    else {
+                        log.debug(`Found ${tempRes.length} repos`);
+                        result = result.concat(tempRes);
+                    }
+                }
+                else {
+                    log.error(`\nError: ${response.status} - ${response.statusText}\n`);
+                    if (tempRes.message)
+                        log.info(tempRes.message, tempRes.documentation_url);
+                    if (config.quitOnError)
+                        process.exit(1);
+                }
             }
         }
         console.timeEnd(durationStr);
-        log.info(`Retrieved repository metadata for ${result.length} repos`);
+        log.info(`Gathered repository metadata for ${result.length} repos`);
         return result;
     });
-};
+}
