@@ -5,6 +5,7 @@ test/
 ts-src/
 _site/
 .cache/
+images/
 
 # files
 .gitignore
