@@ -10,6 +10,7 @@ type ModuleOptions = {
 
 module.exports = function (eleventyConfig: any, _options: ModuleOptions = {}) {
   eleventyConfig.addCollection('githubRepos', async (collectionApi: any) => {
+    
     const configDefaults: ModuleOptions = {
       apiKey: '',
       userAccount: '',
