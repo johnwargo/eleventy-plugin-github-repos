@@ -11,3 +11,6 @@ _site/
 package-lock.json
 pub.mjs
 tsconfig.json
+eleventy.config.js
+*.cmd
+changelog.md
