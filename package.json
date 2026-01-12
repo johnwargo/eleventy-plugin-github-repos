@@ -8,7 +8,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnwargo/eleventy-plugin-github-repos"
+    "url": "git+https://github.com/johnwargo/eleventy-plugin-github-repos.git"
   },
   "scripts": {
     "test": "tsc && echo \"Launching test\" && node ./test/test.js && echo \"Test complete\"",
