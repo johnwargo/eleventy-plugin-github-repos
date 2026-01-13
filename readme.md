@@ -48,7 +48,7 @@ The plugin supports the following configuration options.
 | --------------- | ------- |-----------  | ------- |
 | `apiKey`        | String  | Described above. | `''` |
 | `debugMode`     | Boolean | Use when troubleshooting issues with the plugin or your access to the GitHub API. | `false` |
-| `cacheRequests` | Boolean | Controls whether the plugin makes the API requests every time the site builds (`false`) or uses the Eleventy Cache plugin to cache requests for `cacheDuration` (`true`) | `true` | 
+| `cacheRequests` | Boolean | Controls whether the plugin makes the API requests every time the site builds (`false`) or uses the Eleventy Fetch plugin to cache requests for `cacheDuration` (`true`) | `true` | 
 | `cacheDuration` | String  | With caching enabled, this option controls the cache duration (how long the plugin waits before requesting new data during the build process). Default is 1 day (`1d`); learn more in [Change the Cache Duration](https://www.11ty.dev/docs/plugins/fetch/#change-the-cache-duration). | '1d' |
 | `quitOnError`   | Boolean | Controls whether the plugin cancels the build process when it encounters an error. | `false` |
 | `userAccount`   | String  | Described above. | `''` |
@@ -57,7 +57,7 @@ The plugin supports the following configuration options.
 
 ### `CacheRequests`
 
-Configure the plugin to use the Eleventy [Fetch plugin](https://www.11ty.dev/docs/plugins/fetch/):
+Configure the plugin to use the [Eleventy Fetch](https://www.11ty.dev/docs/plugins/fetch/) for request caching:
 
 ```js
 const apiKey = process.env.GITHUB_API_KEY;

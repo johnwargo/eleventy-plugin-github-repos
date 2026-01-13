@@ -3,7 +3,7 @@
 ## 20260112 v0.1.1
 
 + Converted plugin to 11ty 3.x (potentially a breaking change).
-+ Added support for the `eleventy-cache` plugin.
++ Added support for the `eleventy-fetch` plugin.
 + Added configuration options `cacheRequests` and `cacheDuration`.
 
 ## 20230802
