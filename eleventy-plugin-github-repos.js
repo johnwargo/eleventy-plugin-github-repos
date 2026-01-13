@@ -37,20 +37,20 @@ export default function (eleventyConfig, _options = {}) {
         }
         var currentPage = 0;
         var done = false;
-        var FetchOptions = {};
-        var repoURL;
         var options = {};
+        var repoURL;
+        var requestOptions = {};
         var result = [];
         if (config.apiKey)
-            options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
-        FetchOptions.fetchOptions = { options };
+            requestOptions.headers = { 'Authorization': `Bearer ${config.apiKey}` };
+        options.fetchOptions = { options: requestOptions };
         if (config.cacheRequests) {
-            FetchOptions.duration = config.cacheDuration;
-            FetchOptions.type = "json";
+            options.duration = config.cacheDuration;
+            options.type = "json";
         }
         if (debugMode) {
             console.log('Fetch Options:');
-            console.table(FetchOptions);
+            console.table(options);
             console.log();
         }
         log.info(`Fetching GitHub repositories for ${config.userAccount} using ${config.cacheRequests ? 'Eleventy-Fetch' : 'fetch'}`);
@@ -60,7 +60,7 @@ export default function (eleventyConfig, _options = {}) {
             repoURL = `https://api.github.com/users/${config.userAccount}/repos?per_page=100&page=${currentPage}`;
             log.info(`Fetching ${repoURL}`);
             if (config.cacheRequests) {
-                var data = await Fetch(repoURL, FetchOptions);
+                var data = await Fetch(repoURL, options);
                 if (data.length > 0) {
                     log.debug(`Found ${data.length} repos`);
                     result = result.concat(data);
@@ -71,7 +71,7 @@ export default function (eleventyConfig, _options = {}) {
                 }
             }
             else {
-                var response = await fetch(repoURL, options);
+                var response = await fetch(repoURL, requestOptions);
                 var tempRes = await response.json();
                 if (response.status == 200) {
                     if (tempRes.length === 0) {

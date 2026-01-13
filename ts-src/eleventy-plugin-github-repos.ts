@@ -67,21 +67,21 @@ export default function (eleventyConfig: any, _options: ModuleOptions = {}) {
 
     var currentPage: number = 0;
     var done: boolean = false;
-    var FetchOptions: any = {};
-    var repoURL: string;
     var options: any = {};
+    var repoURL: string;
+    var requestOptions: any = {};
     var result: any[] = [];
 
-    if (config.apiKey) options.headers = { 'Authorization': `Bearer ${config.apiKey}` };
-    FetchOptions.fetchOptions = { options };
+    if (config.apiKey) requestOptions.headers = { 'Authorization': `Bearer ${config.apiKey}` };
+    options.fetchOptions = { options: requestOptions };
     if (config.cacheRequests) {
-      FetchOptions.duration = config.cacheDuration;
-      FetchOptions.type = "json";
+      options.duration = config.cacheDuration;
+      options.type = "json";
     }
 
     if (debugMode) {
       console.log('Fetch Options:');
-      console.table(FetchOptions);
+      console.table(options);
       console.log();
     }
 
@@ -95,7 +95,7 @@ export default function (eleventyConfig: any, _options: ModuleOptions = {}) {
 
       if (config.cacheRequests) {
         // use Eleventy-Fetch
-        var data = await Fetch(repoURL, FetchOptions);
+        var data = await Fetch(repoURL, options);
         if (data.length > 0) {
           log.debug(`Found ${data.length} repos`);
           result = result.concat(data);
@@ -105,7 +105,7 @@ export default function (eleventyConfig: any, _options: ModuleOptions = {}) {
         }
       } else {
         // use fetch directly
-        var response = await fetch(repoURL, options);
+        var response = await fetch(repoURL, requestOptions);
         var tempRes = await response.json();
         if (response.status == 200) {
           if (tempRes.length === 0) {

@@ -1,7 +1,7 @@
 import githubRepos from './eleventy-plugin-github-repos.js';
 
 const apiKey = process.env.GITHUB_API_KEY;
-const debugMode = true;
+const debugMode = false;
 const quitOnError = true;
 
 export default async function (eleventyConfig) {
