@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-github-repos",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "An Eleventy plugin that creates a collection containing metadata from an account's GitHub repositories",
   "author": "John M. Wargo",
   "license": "MIT",
