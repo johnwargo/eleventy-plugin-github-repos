@@ -21,9 +21,8 @@ export default function (eleventyConfig, _options = {}) {
         const debugMode = config.debugMode || false;
         log.level(debugMode ? log.DEBUG : log.INFO);
         log.debug('Debug mode enabled');
-        console.log();
         if (debugMode) {
-            console.log('Configuration:');
+            console.log('\nConfiguration:');
             console.table(config);
         }
         if (!config.userAccount) {
