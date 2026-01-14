@@ -1,1 +1,1 @@
-npm version patch && git push && npm publish
+tsc && npm version patch && git push && npm publish
