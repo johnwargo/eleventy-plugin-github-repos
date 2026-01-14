@@ -48,9 +48,8 @@ export default function (eleventyConfig: any, _options: ModuleOptions = {}) {
     const debugMode = config.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled');
-    console.log();
-    if (debugMode) {
-      console.log('Configuration:');
+    if (debugMode) {      
+      console.log('\nConfiguration:');
       console.table(config);
     }
 

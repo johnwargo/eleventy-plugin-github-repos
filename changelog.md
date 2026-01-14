@@ -1,5 +1,9 @@
 # Changelog
 
+## 20260114 v0.1.7
+
+Minor change to the plugin's output. I inadvertently added an extra `console.log()` which threw off build output.
+
 ## 20260112 v0.1.1
 
 + Converted plugin to 11ty 3.x (potentially a breaking change).
